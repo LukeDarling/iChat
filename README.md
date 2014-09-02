@@ -1,4 +1,0 @@
-iChat
-=====
-
-A PocketMine plugin

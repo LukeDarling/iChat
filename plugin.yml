@@ -1,0 +1,46 @@
+name: iChat
+main: LDX\iChat\Main
+version: 1.0
+api: [1.0.0,1.1.0,1.2.0,1.3.0,1.4.0]
+load: POSTWORLD
+author: LDX
+commands:
+  chat:
+    description: "Allows players to toggle chat."
+    usage: "/chat <on/off>"
+    permission: ichat.command.chat
+  mute:
+    description: "Mutes a player, preventing them from chatting."
+    usage: "/mute <player>"
+    permission: ichat.command.mute
+  unmute:
+    description: "Unmutes a player, allowing them to chat again."
+    usage: "/unmute <player>"
+    permission: ichat.command.unmute
+permissions:
+  ichat:
+    description: "Allows access to all iChat features."
+    default: op
+    children:
+      ichat.*:
+        description: "Allows access to all iChat features."
+        default: op
+      ichat.command:
+        description: "Allows access to all iChat commands."
+        default: op
+        children:
+          ichat.command.*:
+            description: "Allows access to all iChat commands."
+            default: op
+          ichat.command.chat:
+            description: "Allows access to the chat command."
+            default: true
+          ichat.command.mute:
+            description: "Allows access to the mute command."
+            default: op
+          ichat.command.unmute:
+            description: "Allows access to the unmute command."
+            default: op
+      ichat.bypass:
+        description: "Allows you to bypass chat filters."
+        default: op
