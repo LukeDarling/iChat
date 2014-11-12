@@ -1,7 +1,7 @@
 name: iChat
 main: LDX\iChat\Main
-version: 1.0
-api: [1.0.0,1.1.0,1.2.0,1.3.0,1.4.0]
+version: "1.0"
+api: [1.6.0]
 load: POSTWORLD
 author: LDX
 commands:
@@ -20,18 +20,18 @@ commands:
 permissions:
   ichat:
     description: "Allows access to all iChat features."
-    default: op
+    default: false
     children:
       ichat.*:
         description: "Allows access to all iChat features."
-        default: op
+        default: false
       ichat.command:
         description: "Allows access to all iChat commands."
-        default: op
+        default: false
         children:
           ichat.command.*:
             description: "Allows access to all iChat commands."
-            default: op
+            default: false
           ichat.command.chat:
             description: "Allows access to the chat command."
             default: true
