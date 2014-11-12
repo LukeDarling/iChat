@@ -1,5 +1,7 @@
 <?php
+
 namespace LDX\iChat;
+
 use pocketmine\command\Command;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\CommandSender;
@@ -7,10 +9,13 @@ use pocketmine\event\Listener;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\player\PlayerChatEvent;
+
 class Main extends PluginBase implements Listener {
+
   public function onEnable() {
     $this->getServer()->getPluginManager()->registerEvents($this,$this);
   }
+
   public function onCommand(CommandSender $i,Command $cmd,$label,array $args) {
     switch(strtolower($cmd->getName())) {
       case "chat":
@@ -81,12 +86,7 @@ class Main extends PluginBase implements Listener {
       break;
     }
   }
-  /**
-  * @param PlayerChatEvent $event
-  *
-  * @priority HIGHEST
-  * @ignoreCancelled true
-  */
+
   public function onChat(PlayerChatEvent $event) {
     $this->checkData();
     if(!isset($this->data["mute"][strtolower($event->getPlayer()->getName())])) {
@@ -112,6 +112,7 @@ class Main extends PluginBase implements Listener {
       $event->setCancelled();
     }
   }
+
   public function enableChat($p) {
     if(isset($this->data["chat"][strtolower($p->getName())])) {
       unset($this->data["chat"][strtolower($p->getName())]);
@@ -121,6 +122,7 @@ class Main extends PluginBase implements Listener {
       return "[iChat] Chat was already enabled.";
     }
   }
+
   public function disableChat($p) {
     if(isset($this->data["chat"][strtolower($p->getName())])) {
       return "[iChat] Chat was already disabled.";
@@ -130,6 +132,7 @@ class Main extends PluginBase implements Listener {
       return "[iChat] Chat has been disabled.";
     }
   }
+
   public function mute($p) {
     if(!isset($this->data["mute"][strtolower($p->getName())])) {
       $this->data["mute"][strtolower($p->getName())] = array();
@@ -139,6 +142,7 @@ class Main extends PluginBase implements Listener {
       return false;
     }
   }
+
   public function unmute($p) {
     if(isset($this->data["mute"][strtolower($p->getName())])) {
       unset($this->data["mute"][strtolower($p->getName())]);
@@ -148,20 +152,20 @@ class Main extends PluginBase implements Listener {
       return false;
     }
   }
+
   public function checkMessage($m) {
-    $m = str_replace(array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","!","&","~","$","#","@","%","^","&","*","(",")","-","_","[","]","{","}","?","/","\\",".",",","`","|","=","+","<",">","\"","'",":",";"," "),"",$m);
-    /* |      If anyone has a better method for finding only capital letters, please email me at htmlguy7@gmail.com.      |
-       | I am aware that this method doesn't filter out all non-capital letters. I can't figure out preg_replace. Thanks. | */
-    if(strlen($m) > 6) {
-      return false;
-    } else {
+    if(!preg_match("/[^a-zA-Z_\-0-9" . preg_quote("!@#$%^&*()?><.,\"';:[]{}|\\+=~` ") . "]/",$m)) {
       return true;
+    } else {
+      return false;
     }
   }
+
   public function saveData() {
     $this->checkData();
     file_put_contents($this->getDataFolder() . "data.bin",yaml_emit($this->data));
   }
+
   public function checkData() {
     @mkdir($this->getDataFolder());
     if(!file_exists($this->getDataFolder() . "data.bin")) {
@@ -171,5 +175,6 @@ class Main extends PluginBase implements Listener {
       $this->data = yaml_parse(file_get_contents($this->getDataFolder() . "data.bin"));
     }
   }
+
 }
 ?>
