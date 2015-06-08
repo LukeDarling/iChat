@@ -163,18 +163,17 @@ class Main extends PluginBase implements Listener {
 
   public function saveData() {
     $this->checkData();
-    file_put_contents($this->getDataFolder() . "data.bin",yaml_emit($this->data));
+    file_put_contents($this->getDataFolder() . "data.json",json_encode($this->data));
   }
 
   public function checkData() {
     @mkdir($this->getDataFolder());
-    if(!file_exists($this->getDataFolder() . "data.bin")) {
-      file_put_contents($this->getDataFolder() . "data.bin",yaml_emit(array("mute" => array(),"chat" => array())));
+    if(!file_exists($this->getDataFolder() . "data.json")) {
+      file_put_contents($this->getDataFolder() . "data.json",json_encode(array("mute" => array(),"chat" => array())));
     }
     if(!isset($this->data)) {
-      $this->data = yaml_parse(file_get_contents($this->getDataFolder() . "data.bin"));
+      $this->data = json_decode(file_get_contents($this->getDataFolder() . "data.json"),true);
     }
   }
 
 }
-?>
